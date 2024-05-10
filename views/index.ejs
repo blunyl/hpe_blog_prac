@@ -1,0 +1,24 @@
+<%- include('header.ejs') %>
+
+<main class="mw">
+  <h2>THE BLOG</h2>
+  <h3>All blog posts </h3>
+  <%- posts.length === 0 ? `<li>no lists </li>` : posts.map(post => `
+  <ul class="lists">
+    <li class="card">
+      <p hidden>${post._id}</p>
+      <div class="imgArea">
+        <img src="${post.postImgPath}" alt="">
+      </div>
+      <div class="info">
+        <p><span class="user">작성자</span> / <span class="createDate">${post.createAtDate}</span></p>
+        <h4 class="title">${post.title}</h4>
+        <p class="desc">${post.content}</p>
+      </div>
+      <a class="more" href="/detail/${post._id}">자세히보기</a>
+    </li>`).join('')
+    %>
+  </ul>
+</main>
+
+<%- include('footer.ejs') %>
