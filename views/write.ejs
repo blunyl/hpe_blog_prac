@@ -9,15 +9,15 @@
     <label for="postimg">img</label>
     <input type="file" name="postimg" id="postimg">
     <label for="content">content</label>
-    <textarea name="content" id="contnet" placeholder="content"></textarea>
+    <textarea name="content" id="contnet" placeholder="content" required></textarea>
     <label for="createAtDate" hidden>date</label>
-    <input type="date" id="createAtDate" name="createAtDate">
+    <input type="date" id="createAtDate" name="createAtDate" hidden>
     <button type="submit">write</button>
   </form>
 </main>
 
 <script>
-  const createAtDate = document.querySelecto('#createAtDate')
+  const createAtDate = document.querySelector('#createAtDate')
   const today = new Date().toISOString().slice(0,10);//오늘날짜를 지역적으로 바꿔서 시간까지 나옴, 그걸 자른다
   createAtDate.value = today //인풋에 들어감
 </script>

@@ -8,6 +8,7 @@
     width: calc(100% - 4rem);
     margin: auto;
 }
+
 .hd {
     display: flex;
     justify-content: space-between;
@@ -18,11 +19,11 @@
 
 .hd nav {
     flex: 1;
-
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
 }
+
 .hd nav a {
     padding: 0.5rem 1rem;
 }
@@ -37,9 +38,11 @@
     position: relative;
     cursor: pointer;
 }
+
 .hd .darkmode:hover{
     background-color: aliceblue;
 }
+
 .darkmode::before {
     content: "";
     width: 20px;
@@ -130,7 +133,7 @@ main h2 {
     font-size: 18vw;
     text-align: center;
     position: relative;
-    padding:1rem 0 2rem 0;
+    padding: 1rem 0 2rem 0;
     white-space: nowrap;
     margin-bottom: 2rem;
 }
@@ -248,6 +251,7 @@ footer {
 }
 
 /* write page*/
+
 .writecon {
     display: flex;
     flex-wrap: wrap;
@@ -285,4 +289,40 @@ footer {
     .writecon > * {
         width: 100% !important;
     }
+}
+
+.personal ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+.personal li {
+    width: 20%;
+}
+.personal li img {
+    width: 100%;
+
+}
+/* 댓글 */
+#commentForm {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+}
+.comments textarea {
+    width: 80%;
+}
+
+.comment {
+    padding: 1rem 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px dotted lightgray;
+}
+
+.comment p:first-of-type{
+    flex: 1;
 }

@@ -1,0 +1,62 @@
+<%- include('header.ejs') %>
+
+<main class="mw">
+  <h2>THE BLOG</h2>
+  <h3>Login Page</h3>
+  <form action="/login" method="post" class="writecon">
+    <label for="userid">ID</label>
+    <input type="text" name="userid" id="userid" placeholder="id">
+    
+    <label for="pw">PW</label>
+    <input type="password" id="pw" name="pw" placeholder="pw">
+    
+    <button class="loginBtn">LOGIN</button>
+  </form>
+  <p class="alertModal">msg output</p>
+  <p>
+    <a href="/signup">SIGNUP</a>
+  </p>
+</main>
+
+<script>
+  const loginBtn = document.querySelector('.loginBtn')
+  const alertModal = document.querySelector('.alertModal')
+  const userid = document.querySelector('#userid');
+  const pw = document.querySelector('#pw');
+
+  loginBtn.addEventListener('click', async (e)=>{
+    e.preventDefault();
+
+    if(userid.value.trim() === ''){
+      alertModal.innerHTML = `아이디를 입력해주세요`
+      userid.focus()
+      return 
+    }
+
+    if(pw.value.trim() == '') {
+      alertModal.innerHTML = `비번을 입력해주세요`;
+      pw.focus();
+      return;
+    }
+
+    //인풋에 담긴 아이디 비번을 객체로 보낸다
+    const response = await fetch("/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userid: userid.value,
+        pw: pw.value,
+      }),
+    });
+
+    console.log(response);
+    if (response.status === 401) {
+      alertModal.innerHTML = `비밀번호가 맞지 않습니다.`;
+    } else if (response.status === 404) {
+      alertModal.innerHTML = `${userid.value} 없는 아이디 입니다.`;
+    } else if (response.status === 200) {
+      location.href = "/";
+    }
+  });
+</script>
+<%- include('footer.ejs') %>

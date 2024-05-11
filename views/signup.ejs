@@ -1,0 +1,82 @@
+<%- include('header.ejs') %>
+
+<main class="mw">
+  <h2>THE BLOG</h2>
+  <h3>Sign Up Page</h3>
+  <form action="/signup" method="post" class="writecon">
+    <label for="userid">ID</label>
+    <input type="text" name="userid" id="userid" placeholder="id">
+    
+    <label for="pw">PW</label>
+    <input type="password" id="pw" name="pw" placeholder="pw">
+    <label for="pw2">PW</label>
+    <input type="password" id="pw2" name="pw2" placeholder="pwconfirm">
+    
+    <label for="username">NICKNAME</label>
+    <input type="text" id="username" name="username" placeholder="nickname">
+    
+    <button class="signupBtn">SIGNUP</button>
+  </form>
+  <p class="alertModal">msg output</p>
+  <p>
+    <a href="/login">LOGIN</a>
+  </p>
+</main>
+
+<script>
+  const signupBtn = document.querySelector('.signupBtn')
+  const alertModal = document.querySelector('.alertModal')
+
+  signupBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const userid = document.querySelector('#userid');
+    const pw = document.querySelector('#pw');
+    const pw2 = document.querySelector('#pw2');
+    const username = document.querySelector('#username');
+
+    if(userid.value.trim() === ''){ //아이디 공백제거
+      alertModal.innerHTML = `아이디를 입력해주세요`
+      userid.focus()
+      return 
+    }
+
+    //id는 영문으로만 작성 , 정규식 활용
+    if (!/^[a-zA-Z]+$/.test(userid.value.trim())) {
+      alertModal.innerHTML = `아이디는 영문으로만 작성해주세요`;
+      userid.focus();
+      return;
+    }
+
+    //패스워드 입력값 확인, 대소문자,숫자,특문 포함 8자리 이상
+    // const passwordRegex =
+    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+
+    // if (!passwordRegex.test(pw.value)) {
+    //   alertModal.innerHTML = `대소문자,숫자,특문 포함 8자리 이상이어야 합니다`;
+    //   pw.focus();
+    //   return;
+    // }
+
+    //비밀번호 일치 여부 확인
+    if(pw.value.trim() !== pw2.value.trim()) {
+      alertModal.innerHTML = `비밀번호가 일치하지 않습니다`;
+      pw2.focus();
+      return;
+    }
+
+    //닉네임
+    if(username.value.trim() == '') {
+      alertModal.innerHTML = `닉네임을 입력해주세요`;
+      username.focus();
+      return;
+    }
+
+    /* 모든 검사 완료후 버튼 실행시키기 (post요청발생시켜서 다음으로 넘어가게)
+    버튼을 눌렀다고 바로 폼의 기본 동작인 제출이 발생하지 않고, 
+    대신 유효성 검사에 대한 메시지가 표시되고 버튼에서 가까운 조상인 폼을 찾아 제출되게 함
+    */
+    e.target.closest('form').submit()
+  })
+</script>
+
+<%- include('footer.ejs') %>

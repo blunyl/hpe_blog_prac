@@ -1,0 +1,55 @@
+<%- include('header.ejs') %>
+
+<main class="mw">
+  <h2>THE BLOG</h2>
+  <h3>Detail Page</h3>
+  <div class="detail">
+    <h4><%= posts.title %></h4>
+    <p>name / <%= posts.createAtDate %> / like : 0</p>
+    <div class="imgArea">
+      <% if(posts.postImgPath == null){ %>
+        <img src="/images.png" alt="noimg">
+      <% } else { %>
+        <img src="<%= posts.postImgPath %>" alt="<%= posts.title %>">
+      <% } %>
+    </div>
+    <div><%= posts.content %></div>
+  </div>
+  <div>
+    <button class="listBtn">list</button>
+    <button class="editBtn">edit</button>
+    <button class="delBtn">delete</button>
+    <button class="likeBtn">like</button>
+  </div>
+</main>
+
+<script>
+  const listBtn = document.querySelector('.listBtn')
+  listBtn.addEventListener('click', ()=>{
+    location.href = '/'; //index 로 이동
+  })
+
+  const editBtn = document.querySelector('.editBtn')
+  editBtn.addEventListener('click', ()=>{
+    location.href = `/edit/<%= posts._id %>`
+  })
+
+  const delBtn = document.querySelector('.delBtn')
+  delBtn.addEventListener('click',()=>{
+    const postId = `<%= posts._id %>`
+    fetch(`/delete/${postId}`,{
+      method: 'POST',
+      headers: { 'Content-type': 'application/json',
+      },
+      body: JSON.stringify({_method:'DELETE'})
+    }).then(res => {
+      console.log(res);
+      /*delete post 후 redirect 안되는 문제 해결*/
+      if(res.ok) { //삭제 성공시 ok(boolean) 삭제버튼 클릭후 개발자도구에서 확인가능
+        location.href = '/'
+      }
+    })
+  })
+
+</script>
+<%- include('footer.ejs') %>
