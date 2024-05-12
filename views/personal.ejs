@@ -1,0 +1,22 @@
+<%- include('header.ejs') %>
+
+<main class="mw personal">
+  <h2>THE BLOG</h2>
+  <h3><%=  postUser %>'s Posts</h3>
+  <!--personal get요청 에서 배열안의 닉네임을 가지고옴-->
+  <ul>
+    <% if(posts.length == 0) { %>
+      <li>no posts</li>
+    <% } else {%>
+      <% posts.map( post => { %>
+        <li>
+          <% if(post.postImgPath == null){ %>
+              <img src="/images.png" alt="no img">
+          <% } else {%>
+              <img src="<%= post.postImgPath %>" alt="<%= post.title %>">
+          <% } %> 
+        </li>
+      <% }).join('') %>
+    <% } %>
+  </ul>
+<%- include('footer.ejs') %>

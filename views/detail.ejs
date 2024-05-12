@@ -5,7 +5,15 @@
   <h3>Detail Page</h3>
   <div class="detail">
     <h4><%= posts.title %></h4>
-    <p>name / <%= posts.createAtDate %> / like : 0</p>
+    <p><a href="/personal/<%= posts.userid%>"><%= posts.username %></a> 
+      / <%= posts.createAtDate %> 
+      / like : <%= like.like %>
+      / who : 
+      <% if(like.likeMember && Array.isArray(like.likeMember)){ %>
+        <%- like.likeMember.map( m => `
+          <a href="/personal/${m}">${m}</a> `) %>
+      <% } %>
+    </p>
     <div class="imgArea">
       <% if(posts.postImgPath == null){ %>
         <img src="/images.png" alt="noimg">
@@ -16,30 +24,39 @@
     <div><%= posts.content %></div>
   </div>
   <div>
+    <!--유저가 있으면서 글 올린 아이디랑 로그인한 아이디가 같으면 수정/삭제 버튼이 뜨게한다 -->
     <button class="listBtn">list</button>
-    <button class="editBtn">edit</button>
-    <button class="delBtn">delete</button>
     <button class="likeBtn">like</button>
+    <% if(user && user.userid === posts.userid){%>
+      <button class="editBtn">edit</button>
+      <button class="delBtn">delete</button>
+    <% } %>
   </div>
 </main>
 
 <script>
+  /* 버튼마다 이벤트 붙여주니까 안보이는 버튼의 경우 콘솔에 에러가뜸, 
+  버튼이보일경우에만 이벤트 동작하게 처리해줘야한다, 로그인 여부에 따라 
+  보였다안보이는건 수정/삭제 버튼이니까 거기에만 조건문 추가해서 에러없앰 */
   const listBtn = document.querySelector('.listBtn')
   listBtn.addEventListener('click', ()=>{
     location.href = '/'; //index 로 이동
   })
 
   const editBtn = document.querySelector('.editBtn')
-  editBtn.addEventListener('click', ()=>{
-    location.href = `/edit/<%= posts._id %>`
-  })
+  if(editBtn){
+    editBtn.addEventListener('click', ()=>{
+      location.href = `/edit/<%= posts._id %>`
+    })
+  }
 
   const delBtn = document.querySelector('.delBtn')
-  delBtn.addEventListener('click',()=>{
-    const postId = `<%= posts._id %>`
-    fetch(`/delete/${postId}`,{
-      method: 'POST',
-      headers: { 'Content-type': 'application/json',
+  if(delBtn){
+    delBtn.addEventListener('click',()=>{
+      const postId = `<%= posts._id %>`
+      fetch(`/delete/${postId}`,{
+        method: 'POST',
+        headers: { 'Content-type': 'application/json',
       },
       body: JSON.stringify({_method:'DELETE'})
     }).then(res => {
@@ -50,6 +67,25 @@
       }
     })
   })
+
+  const likeBtn = document.querySelector('.likeBtn');
+  const user = `<%= user ? user.userid : '' %>`
+  likeBtn.addEventListener('click', async ()=>{
+    if(!user){
+      alert('로그인이 필요합니다')
+      location.href = '/login'
+    } else{ //좋아요를 클릭한 유저의 정보도 함께 보낸다 (fetch)
+        fetch('/like/<%= posts._id %>',{
+          method: 'POST',
+      }).then(res=> {
+          if(res.ok){ //좋아요 성공
+            alert('좋아요를 눌렀습니다')
+            location.reload()
+          }
+        }
+    )}
+  })
+}
 
 </script>
 <%- include('footer.ejs') %>
